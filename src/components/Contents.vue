@@ -64,10 +64,11 @@ export default {
 <style lang="scss" scoped>
     .contents{
         width: 1100px;
-        height: 430px;
         margin: 0 auto;
         margin-top: 40px;
+        height: 2950px;
         .content {
+            height: 430px;
             margin-bottom: 60px;
             display: flex;
             .content_left {

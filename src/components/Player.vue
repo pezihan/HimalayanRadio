@@ -13,10 +13,10 @@
             <div class="content_play_cneter">
                 <a href="">夏天的风 - 蓝心羽</a>
                 <div class="centetr">
-                    <div class="center_left">
+                    <div class="center_left" @click="bofangClick">
                         <audio ref="audios" src="../assets/audio/夏天的风 - 蓝心羽.mp3"></audio>
                         <div ref="bofang"></div>
-                        <div ref="beijin"></div>
+                        <div ref="beijin" @mousedown="mousedownBeijin"></div>
                     </div>
                     <div class="center_rigth">
                         <span>{{currentTimeText}} /</span>
@@ -66,6 +66,42 @@ export default {
         clearInterval(timer)
       }
       this.duration = this.$refs.audios.duration
+    },
+    // 鼠标按下时
+    mousedownBeijin () {
+      const duration = this.duration
+      const that1 = this.$refs.beijin
+      const that2 = this.$refs.bofang
+      const audios = this.$refs.audios
+      const domToLeft = this.$refs.beijin.getBoundingClientRect().left - this.$refs.beijin.offsetLeft
+      document.onmousemove = function (ev) {
+        const e = ev || window.enent
+        let pubLeft = e.clientX - domToLeft
+        if (pubLeft <= 0) {
+          pubLeft = 0
+        } else if (pubLeft >= 500) {
+          pubLeft = 500
+        }
+        that1.style.left = pubLeft + 'px'
+        that2.style.width = pubLeft + 'px'
+      }
+      // 鼠标抬起时
+      document.onmouseup = function () {
+        document.onmousemove = null
+        const time = that1.offsetLeft / (500 / duration)
+        this.currentTime = time
+        audios.currentTime = time
+      }
+    },
+    // 点击进度栏的时候
+    bofangClick (ev) {
+      const domToLeft = this.$refs.beijin.getBoundingClientRect().left - this.$refs.beijin.offsetLeft
+      const offLeft = ev.clientX - domToLeft
+      this.$refs.beijin.style.left = offLeft + 'px'
+      this.$refs.bofang.style.width = offLeft + 'px'
+      const time = this.$refs.beijin.offsetLeft / (500 / this.duration)
+      this.currentTime = time
+      this.$refs.audios.currentTime = time
     }
   },
   computed: {

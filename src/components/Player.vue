@@ -87,6 +87,9 @@ export default {
       }
       // 鼠标抬起时
       document.onmouseup = function () {
+        if (document.onmousemove === null) {
+          return
+        }
         document.onmousemove = null
         const time = that1.offsetLeft / (500 / duration)
         this.currentTime = time
